@@ -59,6 +59,7 @@ bool Player::Update(float dt)
 	GetPhysicsValues();
 	Move();
 	Jump();
+	Dash();
 	ApplyPhysics();
 	Draw(dt);
 
@@ -77,10 +78,12 @@ void Player::Move() {
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
 		velocity.x = -speed;
 		anims.SetCurrent("move");
+		isLookingBack = true;
 	}
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
 		velocity.x = speed;
 		anims.SetCurrent("move");
+		isLookingBack = false;
 	}
 }
 
@@ -90,6 +93,16 @@ void Player::Jump() {
 		Engine::GetInstance().physics->ApplyLinearImpulseToCenter(pbody, 0.0f, -jumpForce, true);
 		anims.SetCurrent("jump");
 		isJumping = true;
+	}
+}
+
+void Player::Dash() 
+{
+	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_J) == KEY_DOWN ) {
+		//Engine::GetInstance().physics->ApplyLinearImpulseToCenter(pbody, 100.0f, 0.0f, true);
+		if (isLookingBack == false) { velocity.x = 100; }
+		else { velocity.x = -100; }
+		LOG("DASH");
 	}
 }
 
