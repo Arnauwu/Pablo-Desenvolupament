@@ -131,8 +131,13 @@ void Player::Draw(float dt) {
 	Vector2D mapSize = Engine::GetInstance().map->GetMapSizeInPixels();
 	float limitLeft = Engine::GetInstance().render->camera.w / 4;
 	float limitRight = mapSize.getX() - Engine::GetInstance().render->camera.w * 3 / 4;
+	float limitUp = Engine::GetInstance().render->camera.h / 2;
+	float limitDown = mapSize.getY() - Engine::GetInstance().render->camera.h * 1 / 2;
 	if (position.getX() - limitLeft > 0 && position.getX() < limitRight) {
 		Engine::GetInstance().render->camera.x = -position.getX() + Engine::GetInstance().render->camera.w / 4;
+	}
+	if (position.getY() - limitUp > 0 && position.getX() < limitDown) {
+		Engine::GetInstance().render->camera.y = -position.getY() + Engine::GetInstance().render->camera.h / 2;
 	}
 
 	// L10: TODO 5: Draw the player using the texture and the current animation frame
@@ -160,6 +165,11 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 		LOG("Collision ITEM");
 		Engine::GetInstance().audio->PlayFx(pickCoinFxId);
 		physB->listener->Destroy();
+		break;
+	case ColliderType::HAZARD:
+		LOG("Collision HAZARD");
+		Engine::GetInstance().audio->PlayFx(pickCoinFxId);
+		
 		break;
 	case ColliderType::UNKNOWN:
 		LOG("Collision UNKNOWN");

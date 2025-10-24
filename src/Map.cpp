@@ -187,10 +187,25 @@ bool Map::Load(std::string path, std::string fileName)
                 for (int i = 0; i < mapData.height; i++) {
                     for (int j = 0; j < mapData.width; j++) {
                         int gid = mapLayer->Get(i, j);
-                        if (gid == 49) {
+                        if (gid == 61) {
                             Vector2D mapCoord = MapToWorld(i, j);
                             PhysBody* c1 = Engine::GetInstance().physics.get()->CreateRectangle(mapCoord.getX()+ mapData.tileWidth/2, mapCoord.getY()+ mapData.tileHeight/2, mapData.tileWidth, mapData.tileHeight, STATIC);
                             c1->ctype = ColliderType::PLATFORM;
+                        }
+                    }
+                }
+            }
+        }
+        //Hazard Collisions
+        for (const auto& mapLayer : mapData.layers) {
+            if (mapLayer->name == "Collisions") {
+                for (int i = 0; i < mapData.height; i++) {
+                    for (int j = 0; j < mapData.width; j++) {
+                        int gid = mapLayer->Get(i, j);
+                        if (gid == 62) {
+                            Vector2D mapCoord = MapToWorld(i, j);
+                            PhysBody* c1 = Engine::GetInstance().physics.get()->CreateRectangle(mapCoord.getX() + mapData.tileWidth / 2, mapCoord.getY() + mapData.tileHeight / 2, mapData.tileWidth, mapData.tileHeight, STATIC);
+                            c1->ctype = ColliderType::HAZARD;
                         }
                     }
                 }
