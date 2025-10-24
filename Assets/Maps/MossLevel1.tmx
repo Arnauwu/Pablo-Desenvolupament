@@ -1487,7 +1487,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
+   <tile gid="15"/>
    <tile/>
    <tile/>
    <tile/>
@@ -1512,7 +1512,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
+   <tile gid="15"/>
    <tile/>
    <tile/>
    <tile/>
@@ -1526,7 +1526,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
+   <tile gid="15"/>
    <tile/>
    <tile/>
    <tile/>
@@ -1777,7 +1777,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
+   <tile gid="15"/>
    <tile/>
    <tile/>
    <tile/>
@@ -3894,7 +3894,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
+   <tile gid="15"/>
    <tile/>
    <tile/>
    <tile/>
@@ -3919,12 +3919,12 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="15"/>
    <tile/>
    <tile/>
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
    <tile gid="61"/>
    <tile gid="61"/>
    <tile gid="61"/>
@@ -3933,10 +3933,10 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="15"/>
    <tile/>
    <tile/>
    <tile/>
-   <tile/>
    <tile gid="61"/>
    <tile gid="61"/>
    <tile gid="61"/>
@@ -4181,10 +4181,10 @@
    <tile gid="61"/>
    <tile gid="61"/>
    <tile gid="61"/>
-   <tile/>
    <tile/>
    <tile/>
    <tile/>
+   <tile gid="15"/>
    <tile/>
    <tile/>
    <tile/>
@@ -4600,10 +4600,10 @@
    <tile gid="61"/>
    <tile gid="61"/>
    <tile gid="61"/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="62"/>
+   <tile gid="62"/>
+   <tile gid="62"/>
+   <tile gid="62"/>
    <tile gid="61"/>
    <tile gid="61"/>
    <tile gid="61"/>
@@ -4680,10 +4680,10 @@
    <tile gid="61"/>
    <tile gid="61"/>
    <tile gid="61"/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="62"/>
+   <tile gid="62"/>
+   <tile gid="62"/>
+   <tile gid="62"/>
    <tile gid="61"/>
    <tile gid="61"/>
    <tile gid="61"/>
@@ -4760,10 +4760,10 @@
    <tile gid="61"/>
    <tile gid="61"/>
    <tile gid="61"/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
+   <tile gid="62"/>
+   <tile gid="62"/>
+   <tile gid="62"/>
+   <tile gid="62"/>
    <tile gid="61"/>
    <tile gid="61"/>
    <tile gid="61"/>

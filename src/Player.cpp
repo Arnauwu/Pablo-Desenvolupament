@@ -22,7 +22,8 @@ Player::~Player() {
 bool Player::Awake() {
 
 	//L03: TODO 2: Initialize Player parameters
-	position = Vector2D(96, 96);
+	spawnPoint = Vector2D(96, 96);
+	position = spawnPoint;
 	return true;
 }
 
@@ -106,6 +107,17 @@ void Player::Dash()
 	}
 }
 
+void Player::Death() 
+{
+
+	isJumping = false;
+	b2Vec2 spawn = { PIXEL_TO_METERS(spawnPoint.getX()), PIXEL_TO_METERS(spawnPoint.getY()) };
+	b2Rot rota = {cos(pbody->GetRotation()),sin(pbody->GetRotation())};
+	b2Body_SetTransform(pbody->body, spawn, rota);
+	anims.SetCurrent("idle");
+
+}
+
 void Player::ApplyPhysics() {
 	// Preserve vertical speed while jumping
 	if (isJumping == true) {
@@ -169,10 +181,15 @@ void Player::OnCollision(PhysBody* physA, PhysBody* physB) {
 	case ColliderType::HAZARD:
 		LOG("Collision HAZARD");
 		Engine::GetInstance().audio->PlayFx(pickCoinFxId);
-		
+		Death();
 		break;
 	case ColliderType::UNKNOWN:
 		LOG("Collision UNKNOWN");
+		break;
+	case ColliderType::CHECKPOINT:
+		LOG("Collision CHECKPOINT");
+		spawnPoint = position;
+		physB->~PhysBody();
 		break;
 	default:
 		break;

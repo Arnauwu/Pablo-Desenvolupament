@@ -35,6 +35,7 @@ private:
 	void Dash();
 	void ApplyPhysics();
 	void Draw(float dt);
+	void Death();
 
 public:
 
@@ -52,6 +53,7 @@ public:
 	float jumpForce = 2.5f; // The force to apply when jumping
 	bool isJumping = false; // Flag to check if the player is currently jumping
 	bool isLookingBack = false;
+	Vector2D spawnPoint;
 
 private: 
 	b2Vec2 velocity;
