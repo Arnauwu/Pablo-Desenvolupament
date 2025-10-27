@@ -62,6 +62,8 @@ bool Player::Update(float dt)
 	Jump();
 	Dash();
 	ApplyPhysics();
+	CameraFollows();
+	Debug();
 	Draw(dt);
 
 	return true;
@@ -70,39 +72,78 @@ bool Player::Update(float dt)
 void Player::GetPhysicsValues() {
 	// Read current velocity
 	velocity = Engine::GetInstance().physics->GetLinearVelocity(pbody);
-	velocity = { 0, velocity.y }; // Reset horizontal velocity by default, this way the player stops when no key is pressed
+
+	// Reset horizontal velocity by default, this way the player stops when no key is pressed
+	if (godMode)
+	{
+		velocity = { 0,0 };
+	}
+	else
+	{
+		velocity = { velocity.x / 10, velocity.y };  // {0, velocity.y }
+	}
 }
 
 void Player::Move() {
 	
-	// Move left/right
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
-		velocity.x = -speed;
-		anims.SetCurrent("move");
-		isLookingBack = true;
+	if (!godMode)
+	{
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+			velocity.x = -speed;
+			anims.SetCurrent("move");
+			isLookingBack = true;
+		}
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+			velocity.x = speed;
+			anims.SetCurrent("move");
+			isLookingBack = false;
+		}
 	}
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
-		velocity.x = speed;
-		anims.SetCurrent("move");
-		isLookingBack = false;
+	else
+	{
+		// Move left/right
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
+			velocity.x += -speed;
+			isLookingBack = true;
+			anims.SetCurrent("move");
+		}
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
+			velocity.x += speed;
+			isLookingBack = false;
+			anims.SetCurrent("move");
+		}
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) {
+			velocity.y += -speed;
+			anims.SetCurrent("move");
+		}
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
+			velocity.y += speed;
+			anims.SetCurrent("move");
+		}
 	}
+
 }
 
 void Player::Jump() {
-	// This function can be used for more complex jump logic if needed
-	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && isJumping == false) {
-		Engine::GetInstance().physics->ApplyLinearImpulseToCenter(pbody, 0.0f, -jumpForce, true);
-		anims.SetCurrent("jump");
-		isJumping = true;
+	if (!godMode)
+	{
+		// This function can be used for more complex jump logic if needed
+		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && isJumping == false) {
+			Engine::GetInstance().physics->ApplyLinearImpulseToCenter(pbody, 0.0f, -jumpForce, true);
+			anims.SetCurrent("jump");
+			isJumping = true;
+		}
 	}
 }
+
 
 void Player::Dash() 
 {
 	if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_J) == KEY_DOWN ) {
 		//Engine::GetInstance().physics->ApplyLinearImpulseToCenter(pbody, 100.0f, 0.0f, true);
-		if (isLookingBack == false) { velocity.x = 100; }
-		else { velocity.x = -100; }
+		int dashSpd = 300;
+		if (isLookingBack == false) { velocity.x = dashSpd; }
+		else { velocity.x = -dashSpd; }
 		LOG("DASH");
 	}
 }
@@ -116,6 +157,14 @@ void Player::Death()
 	b2Body_SetTransform(pbody->body, spawn, rota);
 	anims.SetCurrent("idle");
 
+}
+
+void Player::Debug()
+{
+	if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) //Toggle Godmode
+	{
+		godMode = !godMode;
+	}
 }
 
 void Player::ApplyPhysics() {
@@ -139,21 +188,41 @@ void Player::Draw(float dt) {
 	position.setX((float)x);
 	position.setY((float)y);
 
-	//L10: TODO 7: Center the camera on the player
-	Vector2D mapSize = Engine::GetInstance().map->GetMapSizeInPixels();
-	float limitLeft = Engine::GetInstance().render->camera.w / 4;
-	float limitRight = mapSize.getX() - Engine::GetInstance().render->camera.w * 3 / 4;
-	float limitUp = Engine::GetInstance().render->camera.h / 2;
-	float limitDown = mapSize.getY() - Engine::GetInstance().render->camera.h * 1 / 2;
-	if (position.getX() - limitLeft > 0 && position.getX() < limitRight) {
-		Engine::GetInstance().render->camera.x = -position.getX() + Engine::GetInstance().render->camera.w / 4;
-	}
-	if (position.getY() - limitUp > 0 && position.getX() < limitDown) {
-		Engine::GetInstance().render->camera.y = -position.getY() + Engine::GetInstance().render->camera.h / 2;
-	}
+	////L10: TODO 7: Center the camera on the player
+	//Vector2D mapSize = Engine::GetInstance().map->GetMapSizeInPixels();
+	//float limitLeft = Engine::GetInstance().render->camera.w / 4;
+	//float limitRight = mapSize.getX() - Engine::GetInstance().render->camera.w * 3 / 4;
+	//float limitUp = Engine::GetInstance().render->camera.h / 2;
+	//float limitDown = mapSize.getY() - Engine::GetInstance().render->camera.h * 1 / 2;
+	//if (position.getX() - limitLeft > 0 && position.getX() < limitRight) {
+	//	Engine::GetInstance().render->camera.x = -position.getX() + Engine::GetInstance().render->camera.w / 4;
+	//}
+	//if (position.getY() - limitUp > 0 && position.getX() < limitDown) {
+	//	Engine::GetInstance().render->camera.y = -position.getY() + Engine::GetInstance().render->camera.h / 2;
+	//}
 
 	// L10: TODO 5: Draw the player using the texture and the current animation frame
 	Engine::GetInstance().render->DrawTexture(texture, x - texW / 2, y - texH / 2, &animFrame);
+}
+
+void Player::CameraFollows()
+{
+	float limitLeft = Engine::GetInstance().render->camera.w / 4;
+	float limitRight = Engine::GetInstance().map->GetMapSizeInPixels().getX() - Engine::GetInstance().render->camera.w * 3 / 4;
+	//L10: TODO 7: Center the camera on the player
+	if (position.getX() - limitLeft > 0 and position.getX() < limitRight)
+	{
+		Engine::GetInstance().render->camera.x = -position.getX() + Engine::GetInstance().render->camera.w / 4;
+	}
+	else if (position.getX() - limitLeft < 0)
+	{
+		Engine::GetInstance().render->camera.x = 0;
+	}
+	else if (Engine::GetInstance().map->GetMapSizeInPixels().getX() - position.getX() < Engine::GetInstance().render->camera.w)
+	{
+		Engine::GetInstance().render->camera.x = -Engine::GetInstance().map->GetMapSizeInPixels().getX() + Engine::GetInstance().render->camera.w;
+	}
+
 }
 
 bool Player::CleanUp()

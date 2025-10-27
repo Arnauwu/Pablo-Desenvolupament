@@ -35,7 +35,10 @@ private:
 	void Dash();
 	void ApplyPhysics();
 	void Draw(float dt);
+	void CameraFollows();
+
 	void Death();
+	void Debug();
 
 public:
 
@@ -54,6 +57,8 @@ public:
 	bool isJumping = false; // Flag to check if the player is currently jumping
 	bool isLookingBack = false;
 	Vector2D spawnPoint;
+
+	bool godMode = false;
 
 private: 
 	b2Vec2 velocity;

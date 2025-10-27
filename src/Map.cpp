@@ -187,20 +187,21 @@ bool Map::Load(std::string path, std::string fileName)
                 for (int i = 0; i < mapData.height; i++) {
                     for (int j = 0; j < mapData.width; j++) {
                         int gid = mapLayer->Get(i, j);
-                        if (gid == 61) { //FLOOR
+                        if (gid == 65) { //FLOOR
                             Vector2D mapCoord = MapToWorld(i, j);
                             PhysBody* c1 = Engine::GetInstance().physics.get()->CreateRectangle(mapCoord.getX()+ mapData.tileWidth/2, mapCoord.getY()+ mapData.tileHeight/2, mapData.tileWidth, mapData.tileHeight, STATIC);
                             c1->ctype = ColliderType::PLATFORM;
                         }
-                        if (gid == 62) { // HAZARDS
+                        if (gid == 67) { // HAZARDS
                             Vector2D mapCoord = MapToWorld(i, j);
                             PhysBody* c1 = Engine::GetInstance().physics.get()->CreateRectangle(mapCoord.getX() + mapData.tileWidth / 2, mapCoord.getY() + mapData.tileHeight / 2, mapData.tileWidth, mapData.tileHeight, STATIC);
                             c1->ctype = ColliderType::HAZARD;
                         }
-                        if (gid == 15) { // CHECKPOINT
+                        if (gid == 66) { // CHECKPOINT
                             Vector2D mapCoord = MapToWorld(i, j);
                             PhysBody* c1 = Engine::GetInstance().physics.get()->CreateRectangle(mapCoord.getX() + mapData.tileWidth / 2, mapCoord.getY() + mapData.tileHeight / 2, mapData.tileWidth, mapData.tileHeight, STATIC);
                             c1->ctype = ColliderType::CHECKPOINT;
+                            
                         }
                     }
                 }
