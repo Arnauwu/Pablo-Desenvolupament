@@ -30,12 +30,12 @@ bool Player::Awake() {
 bool Player::Start() {
 
 	// load
-	std::unordered_map<int, std::string> aliases = { {0,"idle"},{11,"move"},{22,"jump"} };
-	anims.LoadFromTSX("Assets/Textures/PLayer2_Spritesheet.tsx", aliases);
+	std::unordered_map<int, std::string> aliases = { {0,"idle"},{4,"move"},{9,"jump"} };
+	anims.LoadFromTSX("Assets/Player/Pablo_anims.tsx", aliases);
 	anims.SetCurrent("idle");
 
 	//L03: TODO 2: Initialize Player parameters
-	texture = Engine::GetInstance().textures->Load("Assets/Textures/player2_spritesheet.png");
+	texture = Engine::GetInstance().textures->Load("Assets/Player/PabloAnimations.png");
 
 	// L08 TODO 5: Add physics to the player - initialize physics body
 	//Engine::GetInstance().textures->GetSize(texture, texW, texH);
@@ -90,12 +90,18 @@ void Player::Move() {
 	{
 		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) {
 			velocity.x = -speed;
-			anims.SetCurrent("move");
+			if (!isJumping) 
+			{
+				anims.SetCurrent("move");
+			}
 			isLookingBack = true;
 		}
 		if (Engine::GetInstance().input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) {
 			velocity.x = speed;
-			anims.SetCurrent("move");
+			if (!isJumping)
+			{
+				anims.SetCurrent("move");
+			}
 			isLookingBack = false;
 		}
 	}

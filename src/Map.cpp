@@ -35,6 +35,12 @@ bool Map::Update(float dt)
 {
     bool ret = true;
 
+    if (Engine::GetInstance().input.get()->GetKey(SDL_SCANCODE_H) == KEY_DOWN) //Toggle Help Menu
+    {
+        LOG("HelpMenu Toggled");
+        helpMenu = !helpMenu;
+    }
+
     if (mapLoaded) {
 
         // L07 TODO 5: Prepare the loop to draw all tiles in a layer + DrawTexture()
@@ -65,6 +71,11 @@ bool Map::Update(float dt)
                 }
             }
         }
+    }
+
+    if (helpMenu)
+    {
+        DrawHelpMenu();
     }
 
     return ret;
@@ -241,8 +252,35 @@ bool Map::Load(std::string path, std::string fileName)
 
     }
 
+    if (helpMenu)
+    {
+        DrawHelpMenu();
+    }
+
     mapLoaded = ret;
     return ret;
+}
+
+void Map::DrawHelpMenu()
+{
+    SDL_Rect cam = Engine::GetInstance().render->camera;
+    SDL_Rect bG = { -cam.x,cam.y, cam.w,cam.h / 15 };
+    float dif = cam.w / 8;
+
+    //Background Rectangle
+    Engine::GetInstance().render->DrawRectangle(bG, 0, 0, 0, 125);
+
+    //Set Text Color
+    SDL_SetRenderDrawColor(Engine::GetInstance().render->renderer, 255, 255, 255, 255);
+
+    //Text
+    SDL_RenderDebugText(Engine::GetInstance().render->renderer, dif / 8, cam.h / 30, "A & D to move");
+    SDL_RenderDebugText(Engine::GetInstance().render->renderer, dif, cam.h / 30, "Space to jump");
+    SDL_RenderDebugText(Engine::GetInstance().render->renderer, dif * 2, cam.h / 30, "J to dash");
+    SDL_RenderDebugText(Engine::GetInstance().render->renderer, dif * 4, cam.h / 30, "F9 to show Hitboxes");
+    SDL_RenderDebugText(Engine::GetInstance().render->renderer, cam.w - dif * 3, cam.h / 30, "F10 toggle GodMode");
+    //SDL_RenderDebugText(Engine::GetInstance().render->renderer, cam.w - dif * 2, cam.h / 30, "F11 toggle 30Fps");
+    SDL_RenderDebugText(Engine::GetInstance().render->renderer, cam.w - dif, cam.h / 30, "H to show HelpMenu");
 }
 
 // L07: TODO 8: Create a method that translates x,y coordinates from map positions to world positions

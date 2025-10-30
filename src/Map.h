@@ -120,6 +120,8 @@ public:
     // Called before quitting
     bool CleanUp();
 
+    void DrawHelpMenu();
+
     // Load new map
     bool Load(std::string path, std::string mapFileName);
 
@@ -138,6 +140,7 @@ public:
 public: 
     std::string mapFileName;
     std::string mapPath;
+    bool helpMenu = false;
 
 private:
     bool mapLoaded;
